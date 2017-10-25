@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block menu %}
+{% include ':default:menu.html.twig' %}
+{% endblock %}
+
+{% block stylesheets %}
+    {% include ':default:style.html.twig' %}
+{% endblock %}
+
+{% block body %}
+    <div id="wrapper">
+        <div id="container">
+            <div id="welcome">
+                <h1><span>Вы вошли как: {%  if app.user == "" %}anonymous{% else %} {{ app.user }} {% endif %} </span></h1>
+            </div>
+
+            <p>
+                Перейдите в пункт меню <a href="/books">Книги</a> для их чтения, редактирования и загрузки.
+            </p>
+        </div>
+    </div>
+{% endblock %}

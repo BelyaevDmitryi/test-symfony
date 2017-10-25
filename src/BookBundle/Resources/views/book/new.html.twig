@@ -1,0 +1,24 @@
+{% extends '::base.html.twig' %}
+
+{% block menu %}
+    {% include ':default:menu.html.twig' %}
+{% endblock %}
+
+{% block stylesheets %}
+    {% include ':default:style.html.twig' %}
+{% endblock %}
+
+{% block body %}
+    <h1>Добавление новой книги</h1>
+
+    {{ form_start(form) }}
+        {{ form_widget(form) }}
+        <input type="submit" value="Добавить" />
+    {{ form_end(form) }}
+
+    <ul>
+        <li>
+            <a href="{{ path('book_index') }}">Вернуться к библиотеке книг</a>
+        </li>
+    </ul>
+{% endblock %}

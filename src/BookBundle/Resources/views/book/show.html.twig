@@ -1,0 +1,56 @@
+{% extends '::base.html.twig' %}
+
+{% block menu %}
+    {% include ':default:menu.html.twig' %}
+{% endblock %}
+
+{% block stylesheets %}
+    {% include ':default:style.html.twig' %}
+{% endblock %}
+
+{% block body %}
+    <h1>Book</h1>
+
+    <table>
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ book.id }}</td>
+            </tr>
+            <tr>
+                <th>Author</th>
+                <td>{{ book.author }}</td>
+            </tr>
+            <tr>
+                <th>Title</th>
+                <td>{{ book.title }}</td>
+            </tr>
+            <tr>
+                <th>Book</th>
+                <td>{{ book.book }}</td>
+            </tr>
+            <tr>
+                <th>Dateread</th>
+                <td>{% if book.dateRead %}{{ book.dateRead|date('Y-m-d H:i:s') }}{% endif %}</td>
+            </tr>
+            <tr>
+                <th>Isdownload</th>
+                <td>{% if book.isDownload %}Yes{% else %}No{% endif %}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('book_index') }}">Вернуться к библиотеке книг</a>
+        </li>
+        <li>
+            <a href="{{ path('book_edit', { 'id': book.id }) }}">Редактировать</a>
+        </li>
+        <li>
+            {{ form_start(delete_form) }}
+                <input type="submit" value="Удалить">
+            {{ form_end(delete_form) }}
+        </li>
+    </ul>
+{% endblock %}

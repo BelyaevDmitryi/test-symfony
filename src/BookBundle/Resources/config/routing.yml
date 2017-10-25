@@ -1,0 +1,17 @@
+book_homepage:
+    path:     /books
+    defaults: { _controller: BookBundle:Book:index }
+
+book_change:
+    resource: "@BookBundle/Resources/config/routing/book.yml"
+    prefix: /books
+
+book_document:
+    path: /uploads/books/{book}
+    defaults: { _controller: "BookBundle:Book:document"}
+    methods: GET
+
+book_image:
+    path: /uploads/titles/{title}
+    defaults: { _controller: "BookBundle:Book:image"}
+    methods: GET

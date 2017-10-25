@@ -1,0 +1,101 @@
+{% extends '::base.html.twig' %}
+
+{% block menu %}
+    {% include ':default:menu.html.twig' %}
+{% endblock %}
+
+{% block stylesheets %}
+    {% include ':default:style.html.twig' %}
+{% endblock %}
+
+{% block body %}
+    <h1>Библиотека книг</h1>
+
+    {% if books|length > 0 %}
+        <table>
+            <thead>
+            <tr>
+                <th>Id</th>
+                <th>Автор</th>
+                <th>Обложка</th>
+                <th>Книга</th>
+                <th>Дата прочтения</th>
+                <th>Разрешить скачивание</th>
+                <th>Действия</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for book in books %}
+                <tr>
+                    <td><a href="{{ path('book_show', { 'id': book.id }) }}">{{ book.id }}</a></td>
+                    <td>{{ book.author }}</td>
+                    {% if book.isDownload == 1 %}
+                    <td>
+
+                        {% set typeTitleFile = [book.title]|join|split('/titles/') %}
+                        {% set typeBookFile = [book.book]|join|split('/books/') %}
+
+                        {#showImage(path,width,heigth)#}
+
+                        <a href="{{ absolute_url(path('book_image', { 'title': typeTitleFile[1] })) }}">
+                            {{ showImage(absolute_url(path('book_image', { 'title': typeTitleFile[1] })), 500, 200) }}
+                        </a>
+                    </td>
+                    <td>
+                        <div class="pdf-books">
+                            <a href="{{ asset( absolute_url(path('book_document', { 'book': typeBookFile[1] })) )}}">Просмотр Книги</a>
+                        </div>
+                    </td>
+                    <td>{% if book.dateRead %}{{ book.dateRead|date('Y-m-d H:i:s') }}{% endif %}</td>
+                    <td>{% if book.isDownload %}Yes{% else %}No{% endif %}</td>
+                    <td>
+                        <ul>
+                            <li>
+                                <a href="{{ path('book_show', { 'id': book.id }) }}">Показать</a>
+                            </li>
+                            <li>
+                                <a href="{{ path('book_edit', { 'id': book.id }) }}">Редактировать</a>
+                            </li>
+                        </ul>
+                    </td>
+                    {% else %}
+                    <td>
+
+                        {% set typeTitleFile = [book.title]|join|split('/titles/') %}
+                        {% set typeBookFile = [book.book]|join|split('/books/') %}
+
+                        {#showImage(path,width,heigth)#}
+
+                        {{ showImage(absolute_url(path('book_image', { 'title': typeTitleFile[1] })), 500, 200) }}
+                    </td>
+                    <td>
+                        <div class="pdf-books">
+                            Скачивание не разрешено!
+                        </div>
+                    </td>
+                    <td>{% if book.dateRead %}{{ book.dateRead|date('Y-m-d H:i:s') }}{% endif %}</td>
+                    <td>{% if book.isDownload %}Yes{% else %}No{% endif %}</td>
+                    <td>
+                        <ul>
+                            <li>
+                                <a href="{{ path('book_show', { 'id': book.id }) }}">Показать</a>
+                            </li>
+                            <li>
+                                <a href="{{ path('book_edit', { 'id': book.id }) }}">Редактировать</a>
+                            </li>
+                        </ul>
+                    </td>
+                    {% endif %}
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        У вас пока нет книг в библиотеке :((
+    {% endif %}
+    <ul>
+        <li>
+            <a href="{{ path('book_new') }}">Добавить</a>
+        </li>
+    </ul>
+{% endblock %}

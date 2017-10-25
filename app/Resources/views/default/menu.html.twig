@@ -1,0 +1,33 @@
+{% block menu %}
+    <div id="menu">
+        <ul id="menu">
+        <span id="begin">
+            <li>
+                <a href="/">Главная</a>
+            </li>
+        </span>
+        <span id="middle">
+            <li>
+                <a href="/books">Книги</a>
+            </li>
+        </span>
+        <span id="middle">
+            <li>
+                <div id="user">
+                    Логин:{%  if app.user == "" %}anonymous{% else %} {{ app.user }} {% endif %}
+                </div>
+            </li>
+        </span>
+        <span id="middle">
+            <li>
+                <a href="/login">Войти</a>
+            </li>
+        </span>
+        <span id="end">
+            <li>
+                <a href="/register">Регистрация</a>
+            </li>
+        </span>
+        </ul>
+    </div>
+{% endblock %}

@@ -9,17 +9,27 @@
 {% endblock %}
 
 {% block body %}
-    <h1>Book edit</h1>
+    {% if app.user != "" %}
+        <h1>Book edit</h1>
+        {% set typeTitleFile = [book.title]|join|split('/titles/') %}
+        {% set typeBookFile = [book.book]|join|split('/books/') %}
+        {{ form_start(edit_form) }}
+        {{ form_row(edit_form.name) }}
+        {{ form_row(edit_form.author) }}
+        {{ showImage(path('book_image', { 'id': typeTitleFile[1] }), 500, 200, "Обложка книги", book.isDownload) }}
+        {{ form_row(edit_form.title) }}
+        {{ form_row(edit_form.book) }}
+        {{ form_row(edit_form.dateRead) }}
+        {{ form_row(edit_form.isDownload) }}
+        <input type="submit" value="Сохранить"/>
+        {{ form_end(edit_form) }}
+        <ul>
+            <a href="{{ path('book_index') }}">Вернуться к библиотеке книг</a>
+            {{ form_start(delete_form) }}
+            <input type="submit" value="Удалить">
+            {{ form_end(delete_form) }}
+        </ul>
+    {% endif %}
 
-    {{ form_start(edit_form) }}
-        {{ form_widget(edit_form) }}
-        <input type="submit" value="Сохранить" />
-    {{ form_end(edit_form) }}
-
-    <ul>
-        <a href="{{ path('book_index') }}">Вернуться к библиотеке книг</a>
-        {{ form_start(delete_form) }}
-        <input type="submit" value="Удалить">
-        {{ form_end(delete_form) }}
-    </ul>
+    {% if edit_form.title|length > 0 %} <img src="{{ edit_form.title }}" >{% endif %}
 {% endblock %}

@@ -15,7 +15,7 @@
         <table>
             <thead>
             <tr>
-                <th>Id</th>
+                <th>Название</th>
                 <th>Автор</th>
                 <th>Обложка</th>
                 <th>Книга</th>
@@ -27,64 +27,59 @@
             <tbody>
             {% for book in books %}
                 <tr>
-                    <td><a href="{{ path('book_show', { 'id': book.id }) }}">{{ book.id }}</a></td>
+                    <td>{{ book.name }}</td>
                     <td>{{ book.author }}</td>
                     {% if book.isDownload == 1 %}
-                    <td>
-
                         {% set typeTitleFile = [book.title]|join|split('/titles/') %}
                         {% set typeBookFile = [book.book]|join|split('/books/') %}
+                        <td>
+                            {#showImage(path,width,heigth)#}
 
-                        {#showImage(path,width,heigth)#}
-
-                        <a href="{{ absolute_url(path('book_image', { 'title': typeTitleFile[1] })) }}">
-                            {{ showImage(absolute_url(path('book_image', { 'title': typeTitleFile[1] })), 500, 200) }}
-                        </a>
-                    </td>
-                    <td>
-                        <div class="pdf-books">
-                            <a href="{{ asset( absolute_url(path('book_document', { 'book': typeBookFile[1] })) )}}">Просмотр Книги</a>
-                        </div>
-                    </td>
-                    <td>{% if book.dateRead %}{{ book.dateRead|date('Y-m-d H:i:s') }}{% endif %}</td>
-                    <td>{% if book.isDownload %}Yes{% else %}No{% endif %}</td>
-                    <td>
-                        <ul>
-                            <li>
-                                <a href="{{ path('book_show', { 'id': book.id }) }}">Показать</a>
-                            </li>
-                            <li>
-                                <a href="{{ path('book_edit', { 'id': book.id }) }}">Редактировать</a>
-                            </li>
-                        </ul>
-                    </td>
+                            {{ showImage(path('book_image', { 'id': typeTitleFile[1] }), 500, 200, "Обложка книги",book.isDownload) }}
+                            <div>
+                                <a href="{{ asset(path('book_image', {'id': typeTitleFile[1]}) ) }}">Просмотр</a>
+                                <a href="{{ asset(path('download_titles', {'id': book.id }) ) }}">Скачать</a>
+                            </div>
+                        </td>
+                        <td>
+                            <div>
+                                <a href="{{ asset(path('book_document', {'id': typeBookFile[1] }) ) }}">Просмотр</a>
+                            </div>
+                            <div>
+                                <a href="{{ asset(path('download_books', {'id': book.id }) ) }}">Скачать</a>
+                            </div>
+                        </td>
+                        <td>{% if book.dateRead %}{{ book.dateRead|date('Y-m-d H:i:s') }}{% endif %}</td>
+                        <td>{% if book.isDownload %}Yes{% else %}No{% endif %}</td>
+                        <td>
+                            <ul>
+                                {% if app.user != "" %}
+                                <div>
+                                    <a href="{{ path('book_edit', { 'id': book.id }) }}">Редактировать</a>
+                                </div>
+                                {% endif %}
+                            </ul>
+                        </td>
                     {% else %}
-                    <td>
-
-                        {% set typeTitleFile = [book.title]|join|split('/titles/') %}
-                        {% set typeBookFile = [book.book]|join|split('/books/') %}
-
-                        {#showImage(path,width,heigth)#}
-
-                        {{ showImage(absolute_url(path('book_image', { 'title': typeTitleFile[1] })), 500, 200) }}
-                    </td>
-                    <td>
-                        <div class="pdf-books">
-                            Скачивание не разрешено!
-                        </div>
-                    </td>
-                    <td>{% if book.dateRead %}{{ book.dateRead|date('Y-m-d H:i:s') }}{% endif %}</td>
-                    <td>{% if book.isDownload %}Yes{% else %}No{% endif %}</td>
-                    <td>
-                        <ul>
-                            <li>
-                                <a href="{{ path('book_show', { 'id': book.id }) }}">Показать</a>
-                            </li>
-                            <li>
-                                <a href="{{ path('book_edit', { 'id': book.id }) }}">Редактировать</a>
-                            </li>
-                        </ul>
-                    </td>
+                        <td>
+                            {{ showImage(path('book_image', { 'id': book.id }), 500, 200, "Обложка книги",book.isDownload) }}
+                        </td>
+                        <td>
+                            <div class="pdf-books">
+                                Скачивание не разрешено!
+                            </div>
+                        </td>
+                        <td>{% if book.dateRead %}{{ book.dateRead|date('Y-m-d H:i:s') }}{% endif %}</td>
+                        <td>{% if book.isDownload %}Yes{% else %}No{% endif %}</td>
+                        <td>
+                            <ul>
+                                {% if app.user != "" %}
+                                    <div>
+                                        <a href="{{ path('book_edit', { 'id': book.id }) }}">Редактировать</a>
+                                    </div>
+                                {% endif %}
+                            </ul>
+                        </td>
                     {% endif %}
                 </tr>
             {% endfor %}
@@ -93,9 +88,11 @@
     {% else %}
         У вас пока нет книг в библиотеке :((
     {% endif %}
-    <ul>
-        <li>
-            <a href="{{ path('book_new') }}">Добавить</a>
-        </li>
-    </ul>
+    {% if app.user != "" %}
+        <ul>
+            <div>
+                <a href="{{ path('book_new') }}">Добавить</a>
+            </div>
+        </ul>
+    {% endif %}
 {% endblock %}

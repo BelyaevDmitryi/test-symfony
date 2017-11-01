@@ -11,19 +11,23 @@ class BookExtension extends \Twig_Extension
         );
     }
 
-    public function showImage(/*Путь до картинки включая имя файла:*/ $pathImage,/*параметры картинки*/ $widthImage = 100, $heigthImage = 100, /*надпись при наведении*/ $alt="")
+    public function showImage(/*Путь до картинки включая имя файла:*/ $pathImage,/*параметры картинки*/ $widthImage = 100, $heigthImage = 100, /*надпись при наведении*/ $alt="", $isLoad)
     {
-        $out = "";
-        if(isset($pathImage)) {
-            $type = substr($pathImage,strlen($pathImage)-4, 4);
-            if ($type == ".png" || $type == ".jpg" || $type == "jpeg") {
-                $out = '<img src="'.$pathImage.'" width="'.$widthImage.'" height="'.$heigthImage.'"  alt="'.$alt.'">';
-                //$out = "<img src= {{ asset('$pathImage') }}" . " width=" . "$widthImage" . " height=" . "$heigthImage "."alt='$alt'>";
+        if ($isLoad == 1) {
+            if (isset($pathImage)) {
+                $posDot = strrpos($pathImage, ".");
+
+                $type = substr($pathImage, $posDot + 1, strlen($pathImage));
+                if ($type == ".png" || $type == ".jpg" || $type == "jpeg") {
+                    $out = '<img src="' . $pathImage . '" width="' . $widthImage . '" height="' . $heigthImage . '"  alt="' . $alt . '">';
+                } else {
+                    $out = "Ошибка! Тип файла автоматически не распознан";
+                }
             } else {
-                $out = "Ошибка! Тип файла автоматически не распознан";
+                $out = "Проблема в пути (см переменную pathImage)";
             }
         } else {
-            $out = "Проблема в пути (см переменную pathImage)";
+            $out = "Скачивание не разрешено";
         }
         echo $out;
     }

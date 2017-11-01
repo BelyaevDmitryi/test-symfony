@@ -26,7 +26,8 @@ class UploadSubscriber implements EventSubscriber
         return array(
             'prePersist',
             'preUpdate',
-            'uploadFile',
+            'uploadFileTitle',
+            'uploadFileBook',
             'postLoad',
             'preRemoveUpload',
             'removeUpload',
@@ -38,17 +39,19 @@ class UploadSubscriber implements EventSubscriber
     {
         $entity = $args->getEntity();
 
-        $this->uploadFile($entity);
+        $this->uploadFileTitle($entity);
+        $this->uploadFileBook($entity);
     }
 
     public function preUpdate(PreUpdateEventArgs $args)
     {
         $entity = $args->getEntity();
 
-        $this->uploadFile($entity);
+        $this->uploadFileTitle($entity);
+        $this->uploadFileBook($entity);
     }
 
-    private function uploadFile($entity)
+    private function uploadFileTitle($entity)
     {
         // загрузка работает только для сущностей Book
         if (!$entity instanceof Book) {
@@ -56,19 +59,31 @@ class UploadSubscriber implements EventSubscriber
         }
 
         $fileTitle = $entity->getTitle();
-        $fileBook = $entity->getBook();
 
         // загружать только новые файлы
         if (!$fileTitle instanceof UploadedFile) {
             return;
         }
 
-        if (!$fileBook instanceof UploadedFile) {
-            return;
-        }
+        $entity->setTitleOrig($_FILES['book']['name']['title']);
 
         $fileTitleName = $this->uploaderTitle->uploadTitle($fileTitle);
         $entity->setTitle($fileTitleName);
+    }
+
+    private function uploadFileBook($entity)
+    {
+        // загрузка работает только для сущностей Book
+        if (!$entity instanceof Book) {
+            return;
+        }
+
+        $fileBook = $entity->getBook();
+
+        if (!$fileBook instanceof UploadedFile) {
+            return;
+        }
+        $entity->setBookOrig($_FILES['book']['name']['book']);
 
         $fileBookName = $this->uploaderBook->uploadBook($fileBook);
         $entity->setBook($fileBookName);

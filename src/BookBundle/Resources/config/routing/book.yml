@@ -3,14 +3,9 @@ book_index:
     defaults: { _controller: "BookBundle:Book:index" }
     methods: GET
 
-book_show:
-    path: /{id}/show
-    defaults: { _controller: "BookBundle:Book:show" }
-    methods: GET
-
 book_new:
-    path: /new
-    defaults: { _controller: "BookBundle:Book:new" }
+    path: /add
+    defaults: { _controller: "BookBundle:Book:add" }
     methods: [GET, POST]
 
 book_edit:

@@ -29,7 +29,8 @@ services:
         tags:
             - { name: doctrine.event_subscriber, event: prePersist }
             - { name: doctrine.event_subscriber, event: preUpdate }
-            - { name: doctrine.event_subscriber, event: uploadFile }
+            - { name: doctrine.event_subscriber, event: uploadFileTitle }
+            - { name: doctrine.event_subscriber, event: uploadFileBook }
             - { name: doctrine.event_subscriber, event: postLoad }
             - { name: doctrine.event_subscriber, event: preRemoveUpload }
             - { name: doctrine.event_subscriber, event: removeUpload }

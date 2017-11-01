@@ -27,6 +27,29 @@ class Book
     /**
      * @var string
      *
+     * @ORM\Column(name="name", type="string", length=255)
+     */
+    private $name;
+
+    /**
+     * @return mixed
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * @param mixed $name
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+    }
+
+    /**
+     * @var string
+     *
      * @ORM\Column(name="author", type="string", length=255)
      */
     private $author;
@@ -38,6 +61,51 @@ class Book
      * @Assert\File( mimeTypes={ "image/png", "image/jpg", "image/jpeg" })
      */
     private $title;
+
+    /**
+     * @var string
+     * @ORM\Column(name="titleOrig", type="string")
+     *
+     */
+    private $titleOrig;
+
+    /**
+     * @return mixed
+     */
+    public function getTitleOrig()
+    {
+        return $this->titleOrig;
+    }
+
+    /**
+     * @param mixed $titleOrig
+     */
+    public function setTitleOrig($titleOrig)
+    {
+        $this->titleOrig = $titleOrig;
+    }
+
+    /**
+     * @var string
+     * @ORM\Column(name="bookOrig", type="string")
+     */
+    private $bookOrig;
+
+    /**
+     * @return string
+     */
+    public function getBookOrig()
+    {
+        return $this->bookOrig;
+    }
+
+    /**
+     * @param string $bookOrig
+     */
+    public function setBookOrig($bookOrig)
+    {
+        $this->bookOrig = $bookOrig;
+    }
 
     /**
      * @ORM\Column(name="book", type="string")
@@ -63,7 +131,10 @@ class Book
      */
     private $isDownload;
 
-    private $cache;
+    /**
+     * @var FilesystemCache
+     */
+    private $cache = array();
 
     /**
      * @return FilesystemCache
@@ -80,7 +151,6 @@ class Book
     {
         $this->cache = $cache;
     }
-
 
     /**
      * Get id
@@ -141,7 +211,7 @@ class Book
     }
 
     /**
-     * Get book1
+     * Get book
      *
      * @return string
      */
@@ -151,7 +221,7 @@ class Book
     }
 
     /**
-     * Set book1
+     * Set book
      *
      * @param string $book
      *

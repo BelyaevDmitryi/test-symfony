@@ -1,10 +1,14 @@
 book_homepage:
-    path:     /api/v1/books
-    defaults: { _controller: BookBundle:Book:index }
+    path:     /
+    defaults: { _controller: "BookBundle:Book:main" }
 
 book_change:
     resource: "@BookBundle/Resources/config/routing/book.yml"
-    prefix: /api/v1/books
+    prefix: /books
+
+api_book:
+    resource: "@BookBundle/Resources/config/routing/api.yml"
+    prefix: /api
 
 book_document:
     path: /uploads/books/{id}

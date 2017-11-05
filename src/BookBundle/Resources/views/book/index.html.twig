@@ -33,23 +33,21 @@
                         {% set typeTitleFile = [book.title]|join|split('/titles/') %}
                         {% set typeBookFile = [book.book]|join|split('/books/') %}
                         <td>
-                            {#showImage(path,width,heigth)#}
-
-                            {{ showImage(path('book_image', { 'id': typeTitleFile[1] }), 500, 200, "Обложка книги",book.isDownload) }}
+                            {{ showImage(path('book_image', { 'id': typeTitleFile[0] }), 500, 200, "Обложка книги",book.isDownload) }}
                             <div>
-                                <a href="{{ asset(path('book_image', {'id': typeTitleFile[1]}) ) }}">Просмотр</a>
+                                <a href="{{ asset(path('book_image', {'id': typeTitleFile[0]}) ) }}">Просмотр</a>
                                 <a href="{{ asset(path('download_titles', {'id': book.id }) ) }}">Скачать</a>
                             </div>
                         </td>
                         <td>
                             <div>
-                                <a href="{{ asset(path('book_document', {'id': typeBookFile[1] }) ) }}">Просмотр</a>
+                                <a href="{{ asset(path('book_document', {'id': typeBookFile[0] }) ) }}">Просмотр</a>
                             </div>
                             <div>
                                 <a href="{{ asset(path('download_books', {'id': book.id }) ) }}">Скачать</a>
                             </div>
                         </td>
-                        <td>{% if book.dateRead %}{{ book.dateRead|date('Y-m-d H:i:s') }}{% endif %}</td>
+                        <td>{% if book.dateRead %}{{ book.dateRead.date|date('Y-m-d H:i:s') }}{% endif %}</td>
                         <td>{% if book.isDownload %}Yes{% else %}No{% endif %}</td>
                         <td>
                             <ul>
@@ -69,7 +67,7 @@
                                 Скачивание не разрешено!
                             </div>
                         </td>
-                        <td>{% if book.dateRead %}{{ book.dateRead|date('Y-m-d H:i:s') }}{% endif %}</td>
+                        <td>{% if book.dateRead %}{{ book.dateRead.date|date('Y-m-d H:i:s') }}{% endif %}</td>
                         <td>{% if book.isDownload %}Yes{% else %}No{% endif %}</td>
                         <td>
                             <ul>

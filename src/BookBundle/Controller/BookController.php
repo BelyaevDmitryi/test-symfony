@@ -3,11 +3,9 @@
 namespace BookBundle\Controller;
 
 use BookBundle\Entity\Book;
-use BookBundle\Form\BookType;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use BookBundle\Form\BookType;;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Symfony\Component\Cache\Simple\FilesystemCache;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -15,69 +13,61 @@ use Symfony\Component\HttpFoundation\Request;
  *
  * @Route("book")
  */
-class BookController extends Controller
+class BookController extends ApiController
 {
-    private $cache;
+
+    /**
+     * @Route("/", name="book_homepage")
+     * @Method("GET")
+     *
+     */
+    public function mainAction()
+    {
+        return $this->render(':default:index.html.twig');
+    }
+
     /**
      * Lists all book entities.
      *
-     * api/v1/books
+     * books
      *
      * @Route("/", name="book_index")
      * @Method("GET")
      */
     public function indexAction()
     {
-        $em = $this->getDoctrine()->getManager();
-        //выбрали все из доктрины
-        $books = $em->getRepository('BookBundle:Book')->findAll();
-
-        $this->cache = new FilesystemCache('myCache', 86400);
-        if (!$this->cache->has('myCache')){
-            $this->cache = new FilesystemCache('myCache', 86400);
-        } else {
-            $this->cache->get('myCache');
-        }
-        //сортируем по времени
-        //передаем в функцию сортировки
-        usort($books, function ($a, $b) {
-            if($a->getDateRead()->format("Y-m-d H:i:s") < $b->getDateRead()->format("Y-m-d H:i:s")) return -1;
-            elseif($a->getDateRead()->format("Y-m-d H:i:s") > $b->getDateRead()->format("Y-m-d H:i:s")) return 1;
-            else return 0;
-        });
+        //получаем данные в формате json
+        $books = $this->selectAllAction()->getContent();
+        //decode
+        $books = json_decode($books,true);
         //рендерим
-        return $this->render('BookBundle:book:index.html.twig', array(
+
+        $response = $this->render('BookBundle:book:index.html.twig', array(
             'books' => $books,
         ));
+        $response->setSharedMaxAge(86400);
+        $response->headers->addCacheControlDirective('must-revalidate', true);
+        return $response;
     }
 
     /**
      * Creates a add book entity.
      *
-     * api/v1/books/add
+     * books/add
      *
      * @Route("/add", name="book_add")
      * @Method({"GET", "POST"})
      */
     public function addAction(Request $request)
     {
-        $tmp = new FilesystemCache();
-        $tmp->get('myCache');
-        $this->cache = $tmp;
-        if ($this->cache->has('myCache')){
-            $this->cache->get('myCache');
-            $this->cache->clear();
-        }
-
         $book = new Book();
         $form = $this->createForm(BookType::class, $book);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($book);
-            $em->flush();
-            return $this->redirectToRoute('book_index', array('id' => $book->getId()));
+            $book = $this->addedAction($request, $book);
+
+            return $this->redirectToRoute('book_index');
         }
 
         return $this->render('@Book/book/add.html.twig', array(
@@ -88,7 +78,7 @@ class BookController extends Controller
     /**
      * Displays a form to edit an existing book entity.
      *
-     * api/v1/books/{id}/edit
+     * books/{id}/edit
      *
      * @Route("/{id}/edit", name="book_edit")
      * @Method({"GET", "POST"})
@@ -96,18 +86,16 @@ class BookController extends Controller
     public function editAction(Request $request, Book $book)
     {
         $deleteForm = $this->createDeleteForm($book);
+        //в $request добавить файлы
+//        $b = new UploadedFile($book->getTitle(),$book->getTitleOrig());
+//        $t = new UploadedFile($book->getBook(),$book->getBookOrig());
+//        $request->files->add(array($t,$b));
+
         $editForm = $this->createForm(BookType::class, $book);
         $editForm->handleRequest($request);
 
-        $tmp = new FilesystemCache();
-        $tmp->get('myCache');
-        $this->cache = $tmp;
-        if ($this->cache->has('myCache')){
-            $this->cache->get('myCache');
-            $this->cache->clear();
-        }
-
         if ($editForm->isSubmitted() && $editForm->isValid()) {
+            $book = $this->myEditAction($book);
             $this->getDoctrine()->getManager()->flush();
             return $this->redirectToRoute('book_index', array('id' => $book->getId()));
         }
@@ -129,14 +117,6 @@ class BookController extends Controller
     {
         $form = $this->createDeleteForm($book);
         $form->handleRequest($request);
-
-        $tmp = new FilesystemCache();
-        $tmp->get('myCache');
-        $this->cache = $tmp;
-        if ($this->cache->has('myCache')){
-            $this->cache->get('myCache');
-            $this->cache->clear();
-        }
 
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();

@@ -3,12 +3,12 @@
         <ul id="menu">
         <span id="begin">
             <li>
-                <a href="/">Главная</a>
+                <a href={{ path("book_homepage") }}>Главная</a>
             </li>
         </span>
         <span id="middle">
             <li>
-                <a href="/api/v1/books">Книги</a>
+                <a href={{ path("book_index") }}>Книги</a>
             </li>
         </span>
         <span id="middle">
@@ -20,12 +20,12 @@
         </span>
         <span id="middle">
             <li>
-                <a href="/login">Войти</a>
+                <a href={{ path("fos_user_security_login") }}>Войти</a>
             </li>
         </span>
         <span id="end">
             <li>
-                <a href="/register">Регистрация</a>
+                <a href={{ path("fos_user_registration_register") }}>Регистрация</a>
             </li>
         </span>
         </ul>

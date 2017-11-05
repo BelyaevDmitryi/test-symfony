@@ -1,0 +1,14 @@
+book_select:
+    path: /select
+    defaults: { _controller: "BookBundle:Api:selectAll" }
+    methods: GET
+
+book_added:
+    path: /added
+    defaults: { _controller: "BookBundle:Api:added" }
+    methods: [GET, POST]
+
+edit:
+    path: /edit/{id}
+    defaults: { _controller: "BookBundle:Api:edit" }
+    methods: [GET, POST]

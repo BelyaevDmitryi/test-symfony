@@ -32,22 +32,6 @@ class Book
     private $name;
 
     /**
-     * @return mixed
-     */
-    public function getName()
-    {
-        return $this->name;
-    }
-
-    /**
-     * @param mixed $name
-     */
-    public function setName($name)
-    {
-        $this->name = $name;
-    }
-
-    /**
      * @var string
      *
      * @ORM\Column(name="author", type="string", length=255)
@@ -70,42 +54,10 @@ class Book
     private $titleOrig;
 
     /**
-     * @return mixed
-     */
-    public function getTitleOrig()
-    {
-        return $this->titleOrig;
-    }
-
-    /**
-     * @param mixed $titleOrig
-     */
-    public function setTitleOrig($titleOrig)
-    {
-        $this->titleOrig = $titleOrig;
-    }
-
-    /**
      * @var string
      * @ORM\Column(name="bookOrig", type="string")
      */
     private $bookOrig;
-
-    /**
-     * @return string
-     */
-    public function getBookOrig()
-    {
-        return $this->bookOrig;
-    }
-
-    /**
-     * @param string $bookOrig
-     */
-    public function setBookOrig($bookOrig)
-    {
-        $this->bookOrig = $bookOrig;
-    }
 
     /**
      * @ORM\Column(name="book", type="string")
@@ -135,22 +87,6 @@ class Book
      * @var FilesystemCache
      */
     private $cache = array();
-
-    /**
-     * @return FilesystemCache
-     */
-    public function getCache()
-    {
-        return $this->cache;
-    }
-
-    /**
-     * @param FilesystemCache $cache
-     */
-    public function setCache($cache)
-    {
-        $this->cache = $cache;
-    }
 
     /**
      * Get id
@@ -187,6 +123,22 @@ class Book
     }
 
     /**
+     * @return mixed
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * @param mixed $name
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+    }
+
+    /**
      * Set title
      *
      * @param string $title
@@ -211,6 +163,22 @@ class Book
     }
 
     /**
+     * @return mixed
+     */
+    public function getTitleOrig()
+    {
+        return $this->titleOrig;
+    }
+
+    /**
+     * @param mixed $titleOrig
+     */
+    public function setTitleOrig($titleOrig)
+    {
+        $this->titleOrig = $titleOrig;
+    }
+
+    /**
      * Get book
      *
      * @return string
@@ -230,10 +198,24 @@ class Book
     public function setBook($book)
     {
         $this->book = $book;
-
         return $this;
     }
 
+    /**
+     * @return string
+     */
+    public function getBookOrig()
+    {
+        return $this->bookOrig;
+    }
+
+    /**
+     * @param string $bookOrig
+     */
+    public function setBookOrig($bookOrig)
+    {
+        $this->bookOrig = $bookOrig;
+    }
 
     /**
      * Set dateRead
@@ -281,6 +263,22 @@ class Book
     public function getIsDownload()
     {
         return $this->isDownload;
+    }
+
+    /**
+     * @return FilesystemCache
+     */
+    public function getCache()
+    {
+        return $this->cache;
+    }
+
+    /**
+     * @param FilesystemCache $cache
+     */
+    public function setCache($cache)
+    {
+        $this->cache = $cache;
     }
 }
 

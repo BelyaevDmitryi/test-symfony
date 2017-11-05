@@ -2,6 +2,10 @@ book_controller:
     resource: "@BookBundle/Controller/BookController.php"
     type:     annotation
 
+api_controller:
+    resource: "@BookBundle/Controller/ApiController.php"
+    type:     annotation
+
 fos_user_security:
     resource: "@FOSUserBundle/Resources/config/routing/security.xml"
 

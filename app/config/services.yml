@@ -16,15 +16,6 @@ services:
         # if you need to do this, you can override this setting on individual services
         public: false
 
-
-#    BookBundle\EventListener\UploadListener:
-#        tags:
-#            - { name: doctrine.event_listener, event: prePersist }
-#            - { name: doctrine.event_listener, event: preUpdate }
-#            - { name: doctrine.event_listener, event: postLoad }
-#            - { name: doctrine.event_listener, event: preRemoveUpload }
-#            - { name: doctrine.event_listener, event: removeUpload }
-#            - { name: doctrine.event_listener, event: postRemove }
     BookBundle\EventSubscriber\UploadSubscriber:
         tags:
             - { name: doctrine.event_subscriber, event: prePersist }
